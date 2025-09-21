@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>工资登记系统</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            padding: 15px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .fade-enter {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        
+        .fade-enter-active {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        
+        .max-w-md {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .card:hover {
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+        }
+        
+        .btn-main {
+            width: 100%;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 10px;
+            border: none;
+            transition: all 0.2s;
+            margin-bottom: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-main::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+        
+        .btn-main:active::after {
+            width: 200px;
+            height: 200px;
+            opacity: 0;
+        }
+        
+        .btn-small {
+            padding: 12px 16px;
+            font-size: 16px;
+            font-weight: medium;
+            border-radius: 8px;
+            border: none;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .text-big {
+            font-size: 22px;
+            font-weight: bold;
+        }
+        
+        .text-huge {
+            font-size: 32px;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        
+        .text-gray-500 {
+            color: #757575;
+        }
+        
+        .text-gray-600 {
+            color: #616161;
+        }
+        
+        .text-gray-700 {
+            color: #424242;
+        }
+        
+        .text-gray-800 {
+            color: #212121;
+        }
+        
+        .text-primary {
+            color: #2E7D32;
+        }
+        
+        .text-white {
+            color: white;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 16px;
+            font-size: 18px;
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            background-color: #fff;
+        }
+        
+        .input-field:focus {
+            border-color: #2E7D32;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+        }
+        
+        .input-field::placeholder {
+            color: #bdbdbd;
+            transition: color 0.3s ease;
+        }
+        
+        .input-field:focus::placeholder {
+            color: #e0e0e0;
+        }
+        
+        .bg-primary {
+            background-color: #2E7D32;
+            background-image: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
+        }
+        
+        .bg-accent {
+            background-color: #FF9800;
+            background-image: linear-gradient(135deg, #FF9800 0%, #FB8C00 100%);
+        }
+        
+        .bg-success {
+            background-color: #4CAF50;
+            background-image: linear-gradient(135deg, #4CAF50 0%, #43A047 100%);
+        }
+        
+        .bg-warning {
+            background-color: #FFC107;
+            background-image: linear-gradient(135deg, #FFC107 0%, #FFB300 100%);
+        }
+        
+        .bg-neutral {
+            background-color: #757575;
+            background-image: linear-gradient(135deg, #757575 0%, #616161 100%);
+        }
+        
+        .bg-gray-50 {
+            background-color: #fafafa;
+        }
+        
+        .mb-3 {
+            margin-bottom: 10px;
+        }
+        
+        .mb-4 {
+            margin-bottom: 15px;
+        }
+        
+        .mb-5 {
+            margin-bottom: 20px;
+        }
+        
+        .mt-2 {
+            margin-top: 5px;
+        }
+        
+        .mt-3 {
+            margin-top: 10px;
+        }
+        
+        .mt-4 {
+            margin-top: 15px;
+        }
+        
+        .mt-5 {
+            margin-top: 20px;
+        }
+        
+        .p-3 {
+            padding: 10px;
+        }
+        
+        .p-4 {
+            padding: 15px;
+        }
+        
+        .mr-2 {
+            margin-right: 8px;
+        }
+        
+        .mr-3 {
+            margin-right: 12px;
+        }
+        
+        .flex {
+            display: flex;
+        }
+        
+        .justify-between {
+            justify-content: space-between;
+        }
+        
+        .items-center {
+            align-items: center;
+        }
+        
+        .space-y-4 > * {
+            margin-bottom: 15px;
+        }
+        
+        .max-h-52 {
+            max-height: 210px;
+        }
+        
+        .max-h-64 {
+            max-height: 260px;
+        }
+        
+        .overflow-y-auto {
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #bdbdbd #f5f5f5;
+        }
+        
+        .overflow-y-auto::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .overflow-y-auto::-webkit-scrollbar-track {
+            background: #f5f5f5;
+            border-radius: 10px;
+        }
+        
+        .overflow-y-auto::-webkit-scrollbar-thumb {
+            background-color: #bdbdbd;
+            border-radius: 20px;
+        }
+        
+        .employee-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 10px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .back-button {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            color: #616161;
+            font-size: 24px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 10;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .back-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+        }
+        
+        .back-button:active {
+            transform: scale(0.95);
+        }
+        
+        .toast-notification {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.9);
+            background-color: #333;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 100;
+            max-width: 80%;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .toast-notification.show {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+        
+        button:active {
+            transform: scale(0.98);
+        }
+        
+        .icon-text {
+            display: inline-block;
+            width: 24px;
+        }
+        
+        .permission-prompt {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .permission-prompt.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .permission-prompt button {
+            margin-top: 20px;
+            padding: 12px 24px;
+            font-size: 18px;
+            background-color: #2E7D32;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .voice-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #4CAF50;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .voice-indicator.active {
+            opacity: 1;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+        }
+
+        /* 员工状态项样式优化 */
+        .status-item {
+            padding: 12px 15px;
+            border-radius: 8px;
+            background-color: #f5f5f5;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .status-item:hover {
+            background-color: #eeeeee;
+            transform: translateX(3px);
+        }
+        
+        .status-item.registered {
+            background-color: rgba(76, 175, 80, 0.1);
+            border-left: 3px solid #4CAF50;
+        }
+
+        /* 员工列表项样式优化 */
+        .employee-item {
+            padding: 12px 15px;
+            border-radius: 8px;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+        
+        .employee-item:hover {
+            background-color: #eeeeee;
+        }
+        
+        .employee-item .delete-btn {
+            color: #f44336;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            opacity: 0.7;
+            transition: all 0.2s;
+            padding: 4px;
+        }
+        
+        .employee-item .delete-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        /* 界面切换动画 */
+        .screen {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        
+        .screen.hidden {
+            opacity: 0;
+            transform: translateX(20px);
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <audio id="audio-player" preload="none" style="display: none;"></audio>
+    
+    <div id="voice-indicator" class="voice-indicator"></div>
+    
+    <!-- 主界面添加screen类用于动画 -->
+    <div id="main-screen" class="max-w-md screen">
+        <div class="text-center mb-6 mt-3">
+            <h1 class="text-big text-gray-800">工资登记</h1>
+            <p id="current-date" class="text-gray-600 mt-3">2024年5月15日 星期三</p>
+            <div class="mt-4">
+                <p id="employee-progress" class="text-gray-500">员工 1/3</p>
+                <p id="current-employee-display" class="text-huge text-primary mt-2">张三</p>
+            </div>
+        </div>
+        
+        <div class="card fade-enter">
+            <div class="mb-5">
+                <label for="today-salary" class="block text-gray-700 mb-3">今日工资（元）</label>
+                <input 
+                    type="number" 
+                    id="today-salary" 
+                    class="input-field" 
+                    placeholder="请输入金额"
+                    step="0.01"
+                    min="0"
+                    autocomplete="off"
+                >
+            </div>
+            
+            <button 
+                id="record-button" 
+                class="btn-main bg-accent text-white"
+                disabled
+            >
+                <span class="icon-text">✓</span>登记工资
+            </button>
+            
+            <button 
+                id="re-register-button" 
+                class="btn-main bg-warning text-gray-800 hidden"
+            >
+                <span class="icon-text">↺</span>重新登记
+            </button>
+            
+            <button 
+                id="settings-button" 
+                class="btn-main bg-neutral text-white"
+            >
+                <span class="icon-text">⚙</span>系统设置
+            </button>
+        </div>
+        
+        <div class="card fade-enter" style="transition-delay: 0.1s">
+            <h2 class="text-big text-gray-800 mb-4 flex items-center">
+                <span class="icon-text">📋</span>今日登记状态
+            </h2>
+            
+            <div id="today-status-list" class="space-y-4 max-h-52 overflow-y-auto mb-5">
+                <!-- 动态显示今日登记状态 -->
+            </div>
+            
+            <button 
+                id="skip-button" 
+                class="btn-small bg-neutral text-white w-full"
+                disabled
+            >
+                <span class="icon-text">→</span>跳过当前员工
+            </button>
+        </div>
+    </div>
+    
+    <div id="settings-screen" class="max-w-md screen hidden" style="position: relative; padding-bottom: 30px;">
+        <div class="text-center mb-6 mt-5" style="padding-top: 20px;">
+            <button id="back-button" class="back-button">←</button>
+            <h1 class="text-big text-gray-800">系统设置</h1>
+        </div>
+        
+        <div class="card fade-enter">
+            <h2 class="text-big text-gray-800 mb-5 flex items-center">
+                <span class="icon-text">📅</span>日期设置
+            </h2>
+            
+            <div class="mb-5">
+                <label for="setting-date" class="block text-gray-700 mb-3">当前登记日期</label>
+                <input 
+                    type="date" 
+                    id="setting-date" 
+                    class="input-field"
+                >
+            </div>
+            
+            <button 
+                id="save-date-button" 
+                class="btn-main bg-primary text-white"
+            >
+                <span class="icon-text">💾</span>保存日期设置
+            </button>
+        </div>
+        
+        <div class="card fade-enter" style="transition-delay: 0.1s">
+            <h2 class="text-big text-gray-800 mb-5 flex items-center">
+                <span class="icon-text">➕</span>添加员工
+            </h2>
+            
+            <div class="mb-5">
+                <input 
+                    type="text" 
+                    id="new-employee-name" 
+                    class="input-field" 
+                    placeholder="请输入员工姓名"
+                    autocomplete="off"
+                >
+            </div>
+            
+            <button 
+                id="add-employee-button" 
+                class="btn-main bg-primary text-white"
+            >
+                <span class="icon-text">+</span>添加员工
+            </button>
+        </div>
+        
+        <div class="card fade-enter" style="transition-delay: 0.2s">
+            <h2 class="text-big text-gray-800 mb-5 flex items-center">
+                <span class="icon-text">👥</span>员工列表
+            </h2>
+            
+            <div id="employees-list" class="space-y-4 max-h-64 overflow-y-auto">
+                <p class="text-gray-500 text-center p-3">暂无员工</p>
+            </div>
+        </div>
+        
+        <div class="card fade-enter" style="transition-delay: 0.3s">
+            <button 
+                id="export-button" 
+                class="btn-main bg-primary text-white"
+            >
+                <span class="icon-text">📤</span>导出Excel表格
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量保持不变
+        let currentDate, todayStr, todayFullDate;
+        let employees = [];
+        let currentEmployeeIndex = 0;
+        let salaryRecords = [];
+        let isSpeaking = false;
+        let audioSupported = false;
+        let xlsxScriptLoaded = false;
+        let voiceInited = false;
+        let voiceQueue = []; 
+        let isProcessingQueue = false;
+        let audioPlayer;
+        
+        // 初始化函数
+        document.addEventListener('DOMContentLoaded', function() {
+            audioPlayer = document.getElementById('audio-player');
+            
+            audioPlayer.onended = function() {
+                isSpeaking = false;
+                document.getElementById('voice-indicator').classList.remove('active');
+                setTimeout(processVoiceQueue, 200);
+            };
+            
+            audioPlayer.onerror = function(error) {
+                console.error('音频播放错误:', error);
+                isSpeaking = false;
+                document.getElementById('voice-indicator').classList.remove('active');
+                setTimeout(processVoiceQueue, 500);
+            };
+            
+            // 显示当前日期
+            const now = new Date();
+            const options = { month: 'long', day: 'numeric', weekday: 'long' };
+            document.getElementById('current-date').textContent = now.toLocaleDateString('zh-CN', options);
+            
+            // 初始化动画类
+            setTimeout(() => {
+                document.querySelectorAll('.fade-enter').forEach(el => {
+                    el.classList.add('fade-enter-active');
+                });
+            }, 100);
+            
+            initVoiceAndSystem();
+        });
+        
+        // 初始化语音和系统
+        function initVoiceAndSystem() {
+            checkAudioSupport();
+            
+            const permissionPrompt = document.getElementById('permission-prompt');
+            if (permissionPrompt) permissionPrompt.classList.add('hidden');
+            
+            document.getElementById('main-screen').classList.remove('hidden');
+            
+            currentDate = new Date();
+            updateDateInfo(currentDate);
+            
+            document.getElementById('setting-date').value = todayFullDate;
+            
+            loadData();
+            
+            setTimeout(() => {
+                updateEmployeesList();
+                setTimeout(() => {
+                    updateTodayStatusList();
+                    
+                    if (employees.length > 0) {
+                        setCurrentEmployeeIndex(0, true);
+                        document.getElementById('record-button').disabled = false;
+                        document.getElementById('skip-button').disabled = false;
+                    } else {
+                        document.getElementById('current-employee-display').textContent = '请先添加员工';
+                    }
+                    
+                    addEventListeners();
+                }, 100);
+            }, 100);
+        }
+        
+        // 更新日期信息
+        function updateDateInfo(date) {
+            currentDate = date;
+            todayStr = currentDate.toLocaleDateString('zh-CN');
+            todayFullDate = currentDate.toISOString().split('T')[0];
+            
+            // 更新显示的日期
+            const options = { month: 'long', day: 'numeric', weekday: 'long' };
+            document.getElementById('current-date').textContent = currentDate.toLocaleDateString('zh-CN', options);
+        }
+        
+        // 加载数据
+        function loadData() {
+            try {
+                const storedEmployees = localStorage.getItem('employees');
+                const storedRecords = localStorage.getItem('salaryRecords');
+                
+                if (storedEmployees) {
+                    employees = JSON.parse(storedEmployees);
+                }
+                
+                if (storedRecords) {
+                    salaryRecords = JSON.parse(storedRecords);
+                }
+            } catch (e) {
+                console.error('数据加载错误:', e);
+                employees = [];
+                salaryRecords = [];
+            }
+        }
+        
+        // 保存数据
+        function saveData() {
+            try {
+                localStorage.setItem('employees', JSON.stringify(employees));
+                localStorage.setItem('salaryRecords', JSON.stringify(salaryRecords));
+            } catch (e) {
+                console.error('数据保存错误:', e);
+                showToast('数据保存失败');
+            }
+        }
+        
+        // 更新员工列表
+        function updateEmployeesList() {
+            const employeesList = document.getElementById('employees-list');
+            
+            if (employees.length === 0) {
+                employeesList.innerHTML = '<p class="text-gray-500 text-center p-3">暂无员工</p>';
+                return;
+            }
+            
+            let html = '';
+            employees.forEach((name, index) => {
+                html += `
+                <div class="employee-item">
+                    <span>${name}</span>
+                    <button class="delete-btn" data-index="${index}">×</button>
+                </div>
+                `;
+            });
+            
+            employeesList.innerHTML = html;
+        }
+        
+        // 更新今日状态列表
+        function updateTodayStatusList() {
+            const todayStatusList = document.getElementById('today-status-list');
+            
+            if (employees.length === 0) {
+                todayStatusList.innerHTML = '<p class="text-gray-500 text-center p-3">暂无员工信息</p>';
+                return;
+            }
+            
+            let html = '';
+            employees.forEach(name => {
+                const isRegistered = isEmployeeRegistered(name);
+                const salary = getEmployeeTodaySalary(name);
+                
+                html += `
+                <div class="status-item ${isRegistered ? 'registered' : ''}">
+                    <div class="flex items-center">
+                        <span class="employee-indicator ${isRegistered ? 'bg-success' : 'bg-gray-300'}"></span>
+                        <span>${name}</span>
+                    </div>
+                    <span>${isRegistered ? salary.toFixed(2) + '元' : '未登记'}</span>
+                </div>
+                `;
+            });
+            
+            todayStatusList.innerHTML = html;
+        }
+        
+        // 设置当前员工索引
+        function setCurrentEmployeeIndex(index, autoSkip) {
+            if (employees.length === 0) return;
+            
+            // 确保索引在有效范围内
+            currentEmployeeIndex = ((index % employees.length) + employees.length) % employees.length;
+            const currentEmployee = employees[currentEmployeeIndex];
+            
+            // 更新显示
+            document.getElementById('current-employee-display').textContent = currentEmployee;
+            document.getElementById('employee-progress').textContent = `员工 ${currentEmployeeIndex + 1}/${employees.length}`;
+            
+            // 检查当前员工是否已登记
+            const isRegistered = isEmployeeRegistered(currentEmployee);
+            const salary = getEmployeeTodaySalary(currentEmployee);
+            
+            // 更新输入框和按钮状态
+            const salaryInput = document.getElementById('today-salary');
+            salaryInput.value = isRegistered ? salary.toFixed(2) : '';
+            
+            if (isRegistered) {
+                document.getElementById('record-button').classList.add('hidden');
+                document.getElementById('re-register-button').classList.remove('hidden');
+                salaryInput.disabled = true;
+            } else {
+                document.getElementById('re-register-button').classList.add('hidden');
+                document.getElementById('record-button').classList.remove('hidden');
+                salaryInput.disabled = false;
+                salaryInput.focus();
+            }
+            
+            // 如果需要自动跳过已登记的员工
+            if (autoSkip && isRegistered) {
+                const nextIndex = findNextUnregisteredEmployee(currentEmployeeIndex + 1);
+                if (nextIndex !== -1 && nextIndex !== currentEmployeeIndex) {
+                    setTimeout(() => setCurrentEmployeeIndex(nextIndex, true), 0);
+                    return;
+                }
+            }
+            
+            // 播放提示语音（如果未登记）
+            if (!isRegistered) {
+                addToVoiceQueue(`请为${currentEmployee}登记今天的工资数额`);
+            }
+        }
+        
+        // 查找下一个未登记的员工
+        function findNextUnregisteredEmployee(startIndex) {
+            if (employees.length === 0) return -1;
+            
+            for (let i = 0; i < employees.length; i++) {
+                const index = (startIndex + i) % employees.length;
+                if (!isEmployeeRegistered(employees[index])) {
+                    return index;
+                }
+            }
+            return -1; // 所有员工都已登记
+        }
+        
+        // 检查员工是否已登记
+        function isEmployeeRegistered(name) {
+            return salaryRecords.some(r => r.dateStr === todayStr && r.name === name);
+        }
+        
+        // 获取员工今日工资
+        function getEmployeeTodaySalary(name) {
+            const record = salaryRecords.find(r => r.dateStr === todayStr && r.name === name);
+            return record ? record.salary : null;
+        }
+        
+        // 检查是否所有员工都已登记
+        function checkAllRegistered() {
+            if (employees.length === 0) return false;
+            
+            for (const name of employees) {
+                if (!isEmployeeRegistered(name)) {
+                    return false;
+                }
+            }
+            
+            // 所有员工都已登记
+            setTimeout(() => {
+                announceAllRegisteredSummary();
+            }, 500);
+            return true;
+        }
+        
+        // 宣布所有员工已登记的汇总信息
+        function announceAllRegisteredSummary() {
+            let totalSalary = 0;
+            const employeeSalaries = [];
+            
+            employees.forEach(name => {
+                const salary = getEmployeeTodaySalary(name);
+                if (salary !== null) {
+                    totalSalary += salary;
+                    employeeSalaries.push(`${name}${salary}元`);
+                }
+            });
+            
+            const dateText = currentDate.toLocaleDateString('zh-CN', { month: 'long', day: 'numeric' });
+            let summaryText = `今日${dateText}所有员工工资已登记完成。`;
+            
+            if (employeeSalaries.length > 0) {
+                summaryText += `工资分别是：${employeeSalaries.join('，')}。`;
+                summaryText += `总计金额：${totalSalary.toFixed(2)}元。`;
+            }
+            
+            addToVoiceQueue(summaryText);
+            showToast('所有员工已登记完成！');
+        }
+        
+        // 记录工资
+        function recordSalary() {
+            const salaryInput = document.getElementById('today-salary');
+            const salary = parseFloat(salaryInput.value);
+            
+            if (isNaN(salary) || salary < 0) {
+                addToVoiceQueue('请输入有效的工资数额');
+                showToast('请输入有效的工资数额');
+                salaryInput.focus();
+                return;
+            }
+            
+            const currentEmployee = employees[currentEmployeeIndex];
+            const formattedSalary = parseFloat(salary.toFixed(2));
+            
+            // 检查是否已有记录，有则更新，无则添加
+            const existingRecordIndex = salaryRecords.findIndex(
+                r => r.dateStr === todayStr && r.name === currentEmployee
+            );
+            
+            if (existingRecordIndex >= 0) {
+                salaryRecords[existingRecordIndex].salary = formattedSalary;
+            } else {
+                salaryRecords.push({
+                    date: currentDate.toISOString(),
+                    dateStr: todayStr,
+                    name: currentEmployee,
+                    salary: formattedSalary
+                });
+            }
+            
+            saveData();
+            updateTodayStatusList();
+            salaryInput.value = '';
+            
+            // 切换按钮状态
+            document.getElementById('record-button').classList.add('hidden');
+            document.getElementById('re-register-button').classList.remove('hidden');
+            salaryInput.disabled = true;
+            
+            addToVoiceQueue(`${currentEmployee}的工资已登记为${formattedSalary}元`);
+            showToast(`${currentEmployee}的工资已登记`);
+            
+            // 自动跳到下一个未登记的员工
+            const nextIndex = findNextUnregisteredEmployee(currentEmployeeIndex + 1);
+            if (nextIndex !== -1) {
+                setCurrentEmployeeIndex(nextIndex, false);
+            } else {
+                // 检查是否所有员工都已登记
+                checkAllRegistered();
+            }
+        }
+        
+        // 跳过当前员工
+        function skipEmployee() {
+            const nextIndex = findNextUnregisteredEmployee(currentEmployeeIndex + 1);
+            if (nextIndex !== -1) {
+                setCurrentEmployeeIndex(nextIndex, false);
+            } else {
+                // 所有员工都已登记，回到第一个
+                setCurrentEmployeeIndex(0, false);
+                checkAllRegistered();
+            }
+        }
+        
+        // 添加员工
+        function addEmployee(name) {
+            if (!name || name.trim() === '') {
+                addToVoiceQueue('请输入员工姓名');
+                showToast('请输入员工姓名');
+                return false;
+            }
+            
+            name = name.trim();
+            if (employees.includes(name)) {
+                addToVoiceQueue('该员工已存在');
+                showToast('该员工已存在');
+                return false;
+            }
+            
+            employees.push(name);
+            saveData();
+            updateEmployeesList();
+            
+            addToVoiceQueue(`已添加员工${name}`);
+            showToast(`已添加员工${name}`);
+            return true;
+        }
+        
+        // 删除员工
+        function deleteEmployee(index) {
+            if (index < 0 || index >= employees.length) return;
+            
+            const name = employees[index];
+            employees.splice(index, 1);
+            
+            // 删除该员工的所有工资记录
+            salaryRecords = salaryRecords.filter(record => record.name !== name);
+            
+            saveData();
+            updateEmployeesList();
+            updateTodayStatusList();
+            
+            // 如果删除的是当前员工，重新设置当前员工索引
+            if (index === currentEmployeeIndex) {
+                currentEmployeeIndex = 0;
+                setCurrentEmployeeIndex(0, true);
+            } else if (index < currentEmployeeIndex) {
+                currentEmployeeIndex--;
+                setCurrentEmployeeIndex(currentEmployeeIndex, false);
+            }
+            
+            addToVoiceQueue(`已删除员工${name}`);
+            showToast(`已删除员工${name}`);
+        }
+        
+        // 导出到Excel - 优化版本
+        function exportToExcel() {
+            // 检查是否有数据
+            if (salaryRecords.length === 0) {
+                addToVoiceQueue('没有可导出的工资记录');
+                showToast('没有可导出的工资记录');
+                return;
+            }
+            
+            // 动态加载xlsx库，增加备用链接和重试机制
+            if (!xlsxScriptLoaded) {
+                showToast('正在准备导出，请稍候...');
+                loadXLSXScript(0); // 开始加载，参数为尝试次数
+            } else {
+                performExport();
+            }
+        }
+        
+        // 加载XLSX脚本，支持重试和备用链接
+        function loadXLSXScript(attempt) {
+            const maxAttempts = 2;
+            const cdnLinks = [
+                'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js',
+                'https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js' // 备用链接
+            ];
+
+            if (attempt >= maxAttempts) {
+                showToast('导出库加载失败，请检查网络后重试');
+                return;
+            }
+
+            const script = document.createElement('script');
+            script.src = cdnLinks[attempt];
+            script.onload = function() {
+                xlsxScriptLoaded = true;
+                performExport();
+            };
+            script.onerror = function() {
+                // 加载失败，尝试下一个链接
+                loadXLSXScript(attempt + 1);
+            };
+            document.head.appendChild(script);
+        }
+        
+        // 执行导出
+        function performExport() {
+            try {
+                // 按月份分组数据
+                const monthGroups = {};
+                
+                salaryRecords.forEach(record => {
+                    const date = new Date(record.date);
+                    const monthKey = `${date.getFullYear()}年${date.getMonth() + 1}月`;
+                    
+                    if (!monthGroups[monthKey]) {
+                        monthGroups[monthKey] = {};
+                    }
+                    
+                    if (!monthGroups[monthKey][record.name]) {
+                        monthGroups[monthKey][record.name] = [];
+                    }
+                    
+                    monthGroups[monthKey][record.name].push({
+                        date: record.dateStr,
+                        salary: record.salary
+                    });
+                });
+                
+                // 创建工作簿
+                const wb = XLSX.utils.book_new();
+                
+                // 为每个月创建一个工作表
+                Object.keys(monthGroups).forEach(month => {
+                    const monthData = monthGroups[month];
+                    const employeesInMonth = Object.keys(monthData);
+                    
+                    // 获取该月的所有日期（去重并排序）
+                    const datesSet = new Set();
+                    employeesInMonth.forEach(name => {
+                        monthData[name].forEach(entry => datesSet.add(entry.date));
+                    });
+                    const dates = Array.from(datesSet).sort((a, b) => new Date(a) - new Date(b));
+                    
+                    // 准备表格数据
+                    const wsData = [];
+                    // 表头：日期 + 员工姓名
+                    const header = ['日期', ...employeesInMonth, '当日总计'];
+                    wsData.push(header);
+                    
+                    // 填充每日数据
+                    dates.forEach(date => {
+                        const row = [date];
+                        let dailyTotal = 0;
+                        
+                        employeesInMonth.forEach(name => {
+                            const entry = monthData[name].find(e => e.date === date);
+                            const salary = entry ? entry.salary : '';
+                            row.push(salary);
+                            if (salary !== '') dailyTotal += salary;
+                        });
+                        
+                        row.push(dailyTotal.toFixed(2));
+                        wsData.push(row);
+                    });
+                    
+                    // 添加总计行
+                    const totalRow = ['总计'];
+                    let grandTotal = 0;
+                    
+                    employeesInMonth.forEach(name => {
+                        const total = monthData[name].reduce((sum, entry) => sum + entry.salary, 0);
+                        totalRow.push(total.toFixed(2));
+                        grandTotal += total;
+                    });
+                    
+                    totalRow.push(grandTotal.toFixed(2));
+                    wsData.push(totalRow);
+                    
+                    // 创建工作表并添加到工作簿
+                    const ws = XLSX.utils.aoa_to_sheet(wsData);
+                    XLSX.utils.book_append_sheet(wb, ws, month);
+                });
+                
+                // 生成文件名
+                const now = new Date();
+                const fileName = `工资记录_${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}.xlsx`;
+                
+                // 导出文件
+                XLSX.writeFile(wb, fileName);
+                
+                addToVoiceQueue('工资记录导出成功');
+                showToast('导出成功！');
+            } catch (e) {
+                console.error('导出失败:', e);
+                addToVoiceQueue('导出失败，请重试');
+                showToast('导出失败，请重试');
+            }
+        }
+        
+        // 添加事件监听器
+        function addEventListeners() {
+            // 登记按钮
+            document.getElementById('record-button').addEventListener('click', recordSalary);
+            
+            // 重新登记按钮
+            document.getElementById('re-register-button').addEventListener('click', function() {
+                document.getElementById('re-register-button').classList.add('hidden');
+                document.getElementById('record-button').classList.remove('hidden');
+                const salaryInput = document.getElementById('today-salary');
+                salaryInput.disabled = false;
+                salaryInput.focus();
+            });
+            
+            // 跳过按钮
+            document.getElementById('skip-button').addEventListener('click', skipEmployee);
+            
+            // 设置按钮
+            document.getElementById('settings-button').addEventListener('click', function() {
+                document.getElementById('main-screen').classList.add('hidden');
+                document.getElementById('settings-screen').classList.remove('hidden');
+            });
+            
+            // 返回按钮
+            document.getElementById('back-button').addEventListener('click', function() {
+                document.getElementById('settings-screen').classList.add('hidden');
+                document.getElementById('main-screen').classList.remove('hidden');
+                updateTodayStatusList();
+            });
+            
+            // 保存日期设置
+            document.getElementById('save-date-button').addEventListener('click', function() {
+                const dateInput = document.getElementById('setting-date');
+                const newDate = new Date(dateInput.value);
+                
+                if (isNaN(newDate.getTime())) {
+                    addToVoiceQueue('请选择有效的日期');
+                    showToast('请选择有效的日期');
+                    return;
+                }
+                
+                updateDateInfo(newDate);
+                updateTodayStatusList();
+                setCurrentEmployeeIndex(0, true);
+                
+                addToVoiceQueue('日期设置已保存');
+                showToast('日期设置已保存');
+            });
+            
+            // 添加员工
+            document.getElementById('add-employee-button').addEventListener('click', function() {
+                const nameInput = document.getElementById('new-employee-name');
+                const name = nameInput.value.trim();
+                
+                if (addEmployee(name)) {
+                    nameInput.value = '';
+                    // 如果是第一个员工，设置为当前员工
+                    if (employees.length === 1) {
+                        setCurrentEmployeeIndex(0, true);
+                        document.getElementById('record-button').disabled = false;
+                        document.getElementById('skip-button').disabled = false;
+                    }
+                }
+                
+                nameInput.focus();
+            });
+            
+            // 员工姓名输入框回车事件
+            document.getElementById('new-employee-name').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('add-employee-button').click();
+                }
+            });
+            
+            // 工资输入框回车事件
+            document.getElementById('today-salary').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    if (!document.getElementById('record-button').classList.contains('hidden')) {
+                        document.getElementById('record-button').click();
+                    }
+                }
+            });
+            
+            // 导出按钮
+            document.getElementById('export-button').addEventListener('click', exportToExcel);
+            
+            // 员工列表删除按钮事件委托
+            document.getElementById('employees-list').addEventListener('click', function(e) {
+                if (e.target.classList.contains('delete-btn')) {
+                    const index = parseInt(e.target.getAttribute('data-index'));
+                    if (confirm(`确定要删除员工"${employees[index]}"吗？`)) {
+                        deleteEmployee(index);
+                    }
+                }
+            });
+        }
+        
+        // 显示提示消息
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            // 触发重排后添加显示类
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+            
+            // 3秒后隐藏
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 3000);
+        }
+        
+        // 检查音频支持
+        function checkAudioSupport() {
+            audioSupported = !!window.speechSynthesis;
+        }
+        
+        // 添加到语音队列
+        function addToVoiceQueue(text) {
+            if (!audioSupported) return;
+            
+            voiceQueue.push(text);
+            if (!isProcessingQueue) {
+                processVoiceQueue();
+            }
+        }
+        
+        // 处理语音队列
+        function processVoiceQueue() {
+            if (voiceQueue.length === 0) {
+                isProcessingQueue = false;
+                return;
+            }
+            
+            isProcessingQueue = true;
+            const text = voiceQueue.shift();
+            
+            // 初始化语音合成
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'zh-CN';
+            utterance.rate = 0.9;
+            utterance.pitch = 1.1;
+            
+            // 播放开始
+            utterance.onstart = function() {
+                isSpeaking = true;
+                document.getElementById('voice-indicator').classList.add('active');
+            };
+            
+            // 播放结束
+            utterance.onend = function() {
+                isSpeaking = false;
+                document.getElementById('voice-indicator').classList.remove('active');
+                setTimeout(processVoiceQueue, 200);
+            };
+            
+            // 播放错误
+            utterance.onerror = function() {
+                isSpeaking = false;
+                document.getElementById('voice-indicator').classList.remove('active');
+                setTimeout(processVoiceQueue, 500);
+            };
+            
+            window.speechSynthesis.speak(utterance);
+        }
+    </script>
+</body>
+</html>
